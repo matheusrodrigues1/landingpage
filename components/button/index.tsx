@@ -1,8 +1,13 @@
 import Styles from "./button.module.scss";
 
-const Button = ({title, kind}) => {
+interface ButtonProps {
+  title: string;
+  kind?: "primary" | "secondary";
+}
+
+const Button: React.FC<ButtonProps> = ({title, kind}) => {
   const generationClassByKind = () => {
-    if(kind === "secundary") return Styles.secundary;
+    if(kind === "secondary") return Styles.secondary;
 
     return Styles.primary;
   }
