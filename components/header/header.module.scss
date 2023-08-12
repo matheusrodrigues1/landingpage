@@ -17,6 +17,10 @@
     padding: 1rem;
     padding: 1rem;
   }
+
+  @include Tablet {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .menu {
@@ -35,6 +39,10 @@
   text-align: end;
 
   @include Phone {
+    display: none;
+  }
+
+  @include Tablet {
     display: none;
   }
 }
