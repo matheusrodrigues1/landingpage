@@ -1,9 +1,9 @@
 import Styles from "./inpu.module.scss";
 
-const Input = ({type, placeholder, pattern, required}) => {
+const Input = ({type, placeholder, pattern, required, onBlur}) => {
   return (
     <input type={type} placeholder={placeholder} pattern={pattern} required={required}
-            className={Styles.input}
+            className={Styles.input} onBlur={onBlur}
     />
   )
 }
