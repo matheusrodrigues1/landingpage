@@ -4,9 +4,10 @@ interface ButtonProps {
   title: string;
   kind?: "primary" | "secondary";
   onClick: any;
+  type: any;
 }
 
-const Button: React.FC<ButtonProps> = ({title, kind, onClick}) => {
+const Button: React.FC<ButtonProps> = ({title, kind, onClick, type}) => {
   const generationClassByKind = () => {
     if(kind === "secondary") return Styles.secondary;
     if(kind === "full") return Styles.full;
@@ -16,7 +17,13 @@ const Button: React.FC<ButtonProps> = ({title, kind, onClick}) => {
 
 
   return (
-    <button className={`${Styles.button} ${generationClassByKind()}`} onClick={() => onClick()}>{title}</button>
+    <button 
+      type={type}
+      className={`${Styles.button} ${generationClassByKind()}`}
+      onClick={onClick}
+    >
+      {title}
+    </button>
   )
 
 }

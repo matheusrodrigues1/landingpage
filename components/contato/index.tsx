@@ -1,10 +1,15 @@
+import { useState } from "react";
 import Link from "next/link";
-import Button from "../button";
+import axios from "axios";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import Styles from "./contato.module.scss";
+import Button from "../button/index";
 import Input from "../input";
 import Select from "../select";
-import Styles from "./contato.module.scss";
-import axios from "axios";
-import {useState} from "react";
+import { Loading } from "../loading/index";
+import { SuccessModal } from "../successModal";
+import { FailModal } from "../failModal/index";
 
 const Contato = () => {
   const [isloading, setLoading] = useState(false);
@@ -59,37 +64,93 @@ const Contato = () => {
     setModalSuccess(false);
   };
 
-  return <div className={Styles.container}>
-    <div className={Styles.texts}>
-      <span>Lorem ipsum dolor</span>
-      <h1>Lorem ipsum dolor sit amet consectetur</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna</p>
-    </div>
-    <div className={Styles.form}>
-      <h1>Fale com um especialista</h1>
-      
-      <form>
-        <Input type="text" placeholder="Nome completo" pattern required/>
-        <Input type="email" placeholder="E-mail profissional" pattern required/>
-        <Input type="text" placeholder="Celular/Whatsapp" pattern required/>
-        <Input type="text" placeholder="Site" pattern required/>
-        <Select placeholder="Orçamento para mídia" options={[
-          {label: "Instagram", value: "instagram"},
-          {label: "Facebook", value: "facebook"}
-        ]} required
-        />
+  return (
+    <>
+      {successModal && <SuccessModal closeModal={closeModal} />}
+      {failModal && <FailModal closeModal={closeModal} />}
+      {isloading && <Loading />}
+      <div className={Styles.container} id="contato">
+        <div className={Styles.texts}>
+          <span>ENTRE EM CONTATO</span>
+          <h1>Aumente seu resultado de vendas e performance</h1>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna
+          </p>
+        </div>
+        <div className={Styles.form}>
+          <h1>Fale com um especialista</h1>
 
-        <Button title="Enviar" kind="full" onClick={handleSubmitForm}/>
-      </form>
-    </div>
-    <div className={Styles.footer}>
-      <p>Ao enviar esse formulário, você reconhece que leu e concorda com a nossa
-        <Link href="/">
-          <span> Política de Privacidade.</span>
-        </Link>
-      </p>
-    </div>
-  </div>
-}
+          <form id="formulario" onSubmit={formik.handleSubmit}>
+            <Input
+              id="name"
+              name="name"
+              type="text"
+              placeholder="Nome completo"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              value={formik.values.name}
+              required
+            />
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="E-mail profissional"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              value={formik.values.email}
+              required
+            />
+            <Input
+              id="phone"
+              name="phone"
+              type="text"
+              placeholder="Celular/Whatsapp"
+              pattern="^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              value={formik.values.phone}
+              required
+            />
+            <Input
+              id="website"
+              name="website"
+              type="text"
+              placeholder="Site"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              value={formik.values.website}
+              required
+            />
+            <Select
+              id="midia"
+              name="midia"
+              placeholder="Orçamento para mídia"
+              options={[
+                { label: "Instagram", value: "instagram" },
+                { label: "Facebook", value: "facebook" },
+              ]}
+              onChange={formik.handleChange}
+              value={formik.values.midia}
+              required
+            />
+
+            <Button type="submit" title="Enviar" kind="full" />
+          </form>
+        </div>
+        <div className={Styles.footer}>
+          <p>
+            Ao enviar esse formulário, você reconhece que leu e concorda com a
+            nossa
+            <Link href="/">
+              <span> Política de Privacidade.</span>
+            </Link>
+          </p>
+        </div>
+      </div>
+    </>
+  );
+};
 
 export default Contato;
