@@ -1,8 +1,6 @@
-'use client'
 import { useState } from "react";
 import Link from "next/link";
-import axios from "axios";
-import { useFormik, FormikValues } from "formik";
+import { useFormik } from "formik";
 import * as Yup from "yup";
 import Styles from "./contato.module.scss";
 import Button from "../button/index";
@@ -46,31 +44,16 @@ const Contato = () => {
     }),
     validateOnChange: false,
     validateOnBlur: false,
-    onSubmit: (values: FormValues) => handleSubmitForm(values),
+    onSubmit: () => {}, // Mantenha vazio, pois não estamos enviando email
   });
-
-
-
-  const handleSubmitForm = (values: FormikValues) => {
-    setLoading(true);
-    axios
-      .post("/sendEmail", {
-        messageBody: `Nome: ${values.name}, Email: ${values.email}, Telefone: ${values.phone}, Site: ${values.website}, Midia: ${values.midia}`,
-      })
-      .then(() => {
-        formik.resetForm();
-        setLoading(false);
-        setModalSuccess(true);
-      })
-      .catch(() => {
-        setLoading(false);
-        setFailModal(true);
-      });
-  };
 
   const closeModal = () => {
     setFailModal(false);
     setModalSuccess(false);
+  };
+
+  const handleButtonClick = () => {
+    closeModal(); // Chama a função para fechar o modal
   };
 
   return (
@@ -79,7 +62,7 @@ const Contato = () => {
       {failModal && <FailModal closeModal={closeModal} />}
       {isloading && <Loading />}
       <div className={Styles.container} id="contato">
-        <div className={Styles.texts}>
+      <div className={Styles.texts}>
           <span>ENTRE EM CONTATO</span>
           <h1>Aumente seu resultado de vendas e performance</h1>
           <p>
@@ -145,7 +128,7 @@ const Contato = () => {
               required
             />
 
-            <Button type="submit" title="Enviar" kind="full"   onClick={() => handleSubmitForm(formik.values)}/>
+            <Button type="submit" title="Enviar" kind="full" onClick={handleButtonClick} />
           </form>
         </div>
         <div className={Styles.footer}>
