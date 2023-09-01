@@ -1,3 +1,4 @@
+'use client'
 import Styles from "./select.module.scss";
 
 interface Option {

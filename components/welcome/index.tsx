@@ -1,3 +1,4 @@
+'use client'
 import Button from "../button";
 import Styles from "./welcome.module.scss"
 import BannerWelcome from "../../public/images/banerWelcome.svg"

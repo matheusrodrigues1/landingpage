@@ -1,10 +1,11 @@
+'use client'
 import Styles from "./button.module.scss";
 
 interface ButtonProps {
   title: string;
   kind?: "primary" | "secondary" | "full";
   onClick: () => void;
-  type: "submit";
+  type?: "submit";
 }
 
 const Button: React.FC<ButtonProps> = ({title, kind, onClick, type}) => {

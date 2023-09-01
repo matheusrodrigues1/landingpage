@@ -1,3 +1,4 @@
+'use client'
 import { useState } from "react";
 import Link from "next/link";
 import axios from "axios";
@@ -139,7 +140,7 @@ const Contato = () => {
                 { label: "Instagram", value: "instagram" },
                 { label: "Facebook", value: "facebook" },
               ]}
-              onChange={(e) => formik.handleChange(e)}
+              onChange={() => formik.handleChange("midia")}
               value={formik.values.midia}
               required
             />

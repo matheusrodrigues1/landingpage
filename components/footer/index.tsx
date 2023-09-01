@@ -1,3 +1,4 @@
+'use client'
 import Image from "next/image";
 import Styles from "./footer.module.scss"
 import Logo from "../../public/images/agencia.svg"

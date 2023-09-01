@@ -1,3 +1,4 @@
+'use client'
 import Styles from "./input.module.scss";
 
 interface InputProps {

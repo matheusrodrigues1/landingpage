@@ -1,3 +1,4 @@
+'use client'
 import Styles from "./features.module.scss"
 import Icon from "../../public/images/icon.svg"
 import Image from "next/image"
