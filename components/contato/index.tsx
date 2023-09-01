@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import axios from "axios";
-import { useFormik } from "formik";
+import { useFormik, FormikValues } from "formik";
 import * as Yup from "yup";
 import Styles from "./contato.module.scss";
 import Button from "../button/index";
@@ -11,12 +11,20 @@ import { Loading } from "../loading/index";
 import { SuccessModal } from "../successModal";
 import { FailModal } from "../failModal/index";
 
+interface FormValues {
+  name: string;
+  email: string;
+  phone: string;
+  website: string;
+  midia: string;
+}
+
 const Contato = () => {
   const [isloading, setLoading] = useState(false);
   const [successModal, setModalSuccess] = useState(false);
   const [failModal, setFailModal] = useState(false);
 
-  const formik = useFormik({
+  const formik = useFormik<FormValues>({
     initialValues: {
       name: "",
       email: "",
@@ -30,22 +38,22 @@ const Contato = () => {
         .email("E-mail inválido")
         .required("Campo Obrigatório"),
       phone: Yup.string()
-        .matches("", "Digite um telefone válido")
+        .matches(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/, "Digite um telefone válido")
         .required("Campo Obrigatório"),
       website: Yup.string().required("Campo Obrigatório"),
       midia: Yup.string().required("Campo Obrigatório"),
     }),
     validateOnChange: false,
     validateOnBlur: false,
-    onSubmit: (values) => handleSubmitForm(values),
+    onSubmit: (values: FormValues) => handleSubmitForm(values),
   });
 
-  /*   formik?.errors -> Pode ser utilizado para dar feedback no campo e para o usuario*/
 
-  const handleSubmitForm = (values) => {
+
+  const handleSubmitForm = (values: FormikValues) => {
     setLoading(true);
     axios
-      .post("/api/sendEmail", {
+      .post("/sendEmail", {
         messageBody: `Nome: ${values.name}, Email: ${values.email}, Telefone: ${values.phone}, Site: ${values.website}, Midia: ${values.midia}`,
       })
       .then(() => {
@@ -87,7 +95,7 @@ const Contato = () => {
               name="name"
               type="text"
               placeholder="Nome completo"
-              onBlur={formik.handleBlur}
+              onBlur={(e) => formik.handleBlur(e)}
               onChange={formik.handleChange}
               value={formik.values.name}
               required
@@ -97,7 +105,7 @@ const Contato = () => {
               name="email"
               type="email"
               placeholder="E-mail profissional"
-              onBlur={formik.handleBlur}
+              onBlur={(e) => formik.handleBlur(e)}
               onChange={formik.handleChange}
               value={formik.values.email}
               required
@@ -108,7 +116,7 @@ const Contato = () => {
               type="text"
               placeholder="Celular/Whatsapp"
               pattern="^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$"
-              onBlur={formik.handleBlur}
+              onBlur={(e) => formik.handleBlur(e)}
               onChange={formik.handleChange}
               value={formik.values.phone}
               required
@@ -118,7 +126,7 @@ const Contato = () => {
               name="website"
               type="text"
               placeholder="Site"
-              onBlur={formik.handleBlur}
+              onBlur={(e) => formik.handleBlur(e)}
               onChange={formik.handleChange}
               value={formik.values.website}
               required
@@ -131,12 +139,12 @@ const Contato = () => {
                 { label: "Instagram", value: "instagram" },
                 { label: "Facebook", value: "facebook" },
               ]}
-              onChange={formik.handleChange}
+              onChange={(e) => formik.handleChange(e)}
               value={formik.values.midia}
               required
             />
 
-            <Button type="submit" title="Enviar" kind="full" />
+            <Button type="submit" title="Enviar" kind="full"   onClick={() => handleSubmitForm(formik.values)}/>
           </form>
         </div>
         <div className={Styles.footer}>

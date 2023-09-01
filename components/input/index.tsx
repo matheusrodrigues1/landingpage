@@ -1,6 +1,18 @@
 import Styles from "./input.module.scss";
 
-const Input = ({
+interface InputProps {
+  type: string; // Defina o tipo para a propriedade 'type'
+  placeholder?: string;
+  pattern?: string;
+  required?: boolean;
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
+  name?: string;
+  id?: string;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  value?: string;
+}
+
+const Input: React.FC<InputProps> = ({
   type,
   placeholder,
   pattern,
